@@ -1,11 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="citizencomplainsystem.RegisterController">
-    
-</AnchorPane>
+<BorderPane xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="citizencomplainsystem.RegisterController">
+   <center>
+      <GridPane>
+         <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" />
+            <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" />
+         </columnConstraints>
+         
+         <!-- Left Side - Registration Form -->
+         <StackPane style="-fx-background-color: white;" GridPane.columnIndex="0">
+            <VBox alignment="CENTER" maxWidth="400.0" spacing="15.0">
+               <padding>
+                  <Insets bottom="25.0" left="40.0" right="40.0" top="25.0" />
+               </padding>
+               <children>
+                  <Region VBox.vgrow="ALWAYS" />
+                  
+                  <VBox alignment="CENTER" spacing="10.0">
+                     <children>
+                        <Label text="Register Citizen" textFill="#333333">
+                           <font>
+                              <Font name="System Bold" size="28.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="CENTER" spacing="5.0">
+                           <children>
+                              <Label text="Already registered?" textFill="#666666">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Label>
+                              <Hyperlink fx:id="loginLink" onAction="#openLogin" text="Login here" textFill="#8B5CF6">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Hyperlink>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  
+                  <VBox fx:id="formContainer" spacing="15.0" VBox.vgrow="NEVER">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
+                     <children>
+                        <VBox spacing="6.0">
+                           <children>
+                              <Label text="Full Name" textFill="#333333">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="fullNameField" promptText="Enter your full name" style="-fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 12; -fx-font-size: 13px;" />
+                           </children>
+                        </VBox>
+                        
+                        <VBox spacing="6.0">
+                           <children>
+                              <Label text="Email Address" textFill="#333333">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="emailField" promptText="citizen@example.com" style="-fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 12; -fx-font-size: 13px;" />
+                           </children>
+                        </VBox>
+                        
+                        <VBox spacing="6.0">
+                           <children>
+                              <Label text="Mobile Number" textFill="#333333">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="phoneField" promptText="01712345678" style="-fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 12; -fx-font-size: 13px;" />
+                           </children>
+                        </VBox>
+                        
+                        <VBox spacing="6.0">
+                           <children>
+                              <Label text="Password" textFill="#333333">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
+                              <PasswordField fx:id="passwordField" promptText="Enter 6 characters or more" style="-fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 12; -fx-font-size: 13px;" />
+                           </children>
+                        </VBox>
+                        
+                        <VBox spacing="6.0">
+                           <children>
+                              <Label text="Confirm Password" textFill="#333333">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
+                              <PasswordField fx:id="confirmPasswordField" promptText="Confirm your password" style="-fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 12; -fx-font-size: 13px;" />
+                           </children>
+                        </VBox>
+                        
+                        <Button fx:id="registerButton" mnemonicParsing="false" onAction="#handleRegister" prefHeight="45.0" style="-fx-background-color: #8B5CF6; -fx-background-radius: 8; -fx-text-fill: white; -fx-font-size: 15px;" text="REGISTER AS CITIZEN" maxWidth="Infinity">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </Button>
+                     </children>
+                  </VBox>
+                  
+                  <Region VBox.vgrow="ALWAYS" />
+               </children>
+            </VBox>
+         </StackPane>
+         
+         <!-- Right Side - Image -->
+         <StackPane style="-fx-background-color: #ffffff;" GridPane.columnIndex="1">
+            <ImageView fx:id="registerImageView" fitHeight="280.0" fitWidth="380.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/loginImage.jpg" />
+               </image>
+            </ImageView>
+         </StackPane>
+      </GridPane>
+   </center>
+</BorderPane>
