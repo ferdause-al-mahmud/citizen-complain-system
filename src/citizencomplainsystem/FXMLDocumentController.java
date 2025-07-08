@@ -34,64 +34,107 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Hyperlink signUpLink;
     
+    // Demo admin credentials
+    private static final String ADMIN_EMAIL = "a@gmail.com";
+    private static final String ADMIN_PASSWORD = "adminpass";
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Initialization code if needed
     }    
 
     @FXML
-private void handleLogin(ActionEvent event) {
-    String email = emailField.getText().trim();
-    String password = passwordField.getText().trim();
+    private void handleLogin(ActionEvent event) {
+        String email = emailField.getText().trim();
+        String password = passwordField.getText().trim();
 
-    // Validation
-    if (email.isEmpty() && password.isEmpty()) {
-        showAlert("Validation Error", "Please fill in both email and password fields.");
-        return;
+        // Validation
+        if (email.isEmpty() && password.isEmpty()) {
+            showAlert("Validation Error", "Please fill in both email and password fields.");
+            return;
+        }
+
+        if (email.isEmpty()) {
+            showAlert("Validation Error", "Please enter your email address.");
+            return;
+        }
+
+        if (password.isEmpty()) {
+            showAlert("Validation Error", "Please enter your password.");
+            return;
+        }
+
+        if (!isValidEmail(email)) {
+            showAlert("Validation Error", "Please enter a valid email address.");
+            return;
+        }
+
+        // Check user role and authenticate
+        if (isAdminUser(email, password)) {
+            // Admin login
+            System.out.println("=== ADMIN LOGIN ATTEMPT ===");
+            System.out.println("Email: " + email);
+            System.out.println("Role: Administrator");
+            System.out.println("============================");
+            
+            redirectToAdminDashboard(email);
+        } else {
+            // Regular user login (you can add user validation here)
+            System.out.println("=== USER LOGIN ATTEMPT ===");
+            System.out.println("Email: " + email);
+            System.out.println("Role: User");
+            System.out.println("==========================");
+            
+            redirectToUserDashboard(email);
+        }
     }
-
-    if (email.isEmpty()) {
-        showAlert("Validation Error", "Please enter your email address.");
-        return;
+    
+    private boolean isAdminUser(String email, String password) {
+        // Check if the entered credentials match admin credentials
+        return ADMIN_EMAIL.equals(email) && ADMIN_PASSWORD.equals(password);
     }
+    
+    private void redirectToAdminDashboard(String email) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminDashboard.fxml"));
+            Parent root = loader.load();
 
-    if (password.isEmpty()) {
-        showAlert("Validation Error", "Please enter your password.");
-        return;
+            // Pass email to admin controller
+            AdminDashboardController controller = loader.getController();
+            controller.setCurrentAdmin(email);
+
+            // Get the current stage and set new scene
+            Stage stage = (Stage) emailField.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Admin Dashboard - Citizen Complaint System");
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Unable to load Admin Dashboard.");
+        }
     }
+    
+    private void redirectToUserDashboard(String email) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("UserDashboard.fxml"));
+            Parent root = loader.load();
 
-    if (!isValidEmail(email)) {
-        showAlert("Validation Error", "Please enter a valid email address.");
-        return;
+            // Pass email to user controller
+            UserDashboardController controller = loader.getController();
+            controller.setCurrentUser(email);
+
+            // Get the current stage and set new scene
+            Stage stage = (Stage) emailField.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("User Dashboard - Citizen Complaint System");
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Unable to load User Dashboard.");
+        }
     }
-
-    // Simulate login (replace with actual login logic)
-    System.out.println("=== LOGIN ATTEMPT ===");
-    System.out.println("Email: " + email);
-    System.out.println("Password: " + password);
-    System.out.println("=====================");
-
-    // Load UserDashboard.fxml
-    try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("UserDashboard.fxml"));
-        Parent root = loader.load();
-
-        // Pass email to controller
-        UserDashboardController controller = loader.getController();
-        controller.setCurrentUser(email);  // This method already exists
-
-        // Get the current stage and set new scene
-        Stage stage = (Stage) emailField.getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.setTitle("User Dashboard - Citizen Complaint System");
-        stage.show();
-
-    } catch (IOException e) {
-        e.printStackTrace();
-        showAlert("Error", "Unable to load User Dashboard.");
-    }
-}
-
     
     @FXML
     private void openRegister(ActionEvent event) {
