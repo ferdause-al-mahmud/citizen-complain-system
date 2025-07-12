@@ -18,30 +18,31 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.bson.Document;
 
 /**
  *
  * @author ferda
  */
 public class FXMLDocumentController implements Initializable {
-    
+
     @FXML
     private TextField emailField;
-    
+
     @FXML
     private PasswordField passwordField;
-    
+
     @FXML
     private Hyperlink signUpLink;
-    
+
     // Demo admin credentials
     private static final String ADMIN_EMAIL = "a@gmail.com";
     private static final String ADMIN_PASSWORD = "adminpass";
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Initialization code if needed
-    }    
+    }
 
     @FXML
     private void handleLogin(ActionEvent event) {
@@ -69,31 +70,26 @@ public class FXMLDocumentController implements Initializable {
             return;
         }
 
-        // Check user role and authenticate
-        if (isAdminUser(email, password)) {
-            // Admin login
-            System.out.println("=== ADMIN LOGIN ATTEMPT ===");
-            System.out.println("Email: " + email);
-            System.out.println("Role: Administrator");
-            System.out.println("============================");
-            
-            redirectToAdminDashboard(email);
+        // Authenticate with MongoDB
+        MongoDBConnector.connect(); // ensure connected
+        Document user = MongoDBConnector.authenticateAndGetUser(email, password);
+        System.out.println(user);
+
+        if (user != null) {
+            String role = user.getString("role");
+
+            if ("admin".equalsIgnoreCase(role)) {
+                System.out.println("=== ADMIN LOGIN SUCCESS ===");
+                redirectToAdminDashboard(email);
+            } else {
+                System.out.println("=== USER LOGIN SUCCESS ===");
+                redirectToUserDashboard(email);
+            }
         } else {
-            // Regular user login (you can add user validation here)
-            System.out.println("=== USER LOGIN ATTEMPT ===");
-            System.out.println("Email: " + email);
-            System.out.println("Role: User");
-            System.out.println("==========================");
-            
-            redirectToUserDashboard(email);
+            showAlert("Login Failed", "Invalid email or password.");
         }
     }
-    
-    private boolean isAdminUser(String email, String password) {
-        // Check if the entered credentials match admin credentials
-        return ADMIN_EMAIL.equals(email) && ADMIN_PASSWORD.equals(password);
-    }
-    
+
     private void redirectToAdminDashboard(String email) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminDashboard.fxml"));
@@ -105,16 +101,20 @@ public class FXMLDocumentController implements Initializable {
 
             // Get the current stage and set new scene
             Stage stage = (Stage) emailField.getScene().getWindow();
+            stage.setMaximized(false);  // First set to false
+
             stage.setScene(new Scene(root));
             stage.setTitle("Admin Dashboard - Citizen Complaint System");
-            stage.show();
+            javafx.application.Platform.runLater(() -> {
+                stage.setMaximized(true);  // Then set to true
+            });
 
         } catch (IOException e) {
             e.printStackTrace();
             showAlert("Error", "Unable to load Admin Dashboard.");
         }
     }
-    
+
     private void redirectToUserDashboard(String email) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("UserDashboard.fxml"));
@@ -126,38 +126,45 @@ public class FXMLDocumentController implements Initializable {
 
             // Get the current stage and set new scene
             Stage stage = (Stage) emailField.getScene().getWindow();
+            stage.setMaximized(false);  // First set to false
+
             stage.setScene(new Scene(root));
             stage.setTitle("User Dashboard - Citizen Complaint System");
-            stage.show();
+            javafx.application.Platform.runLater(() -> {
+                stage.setMaximized(true);  // Then set to true
+            });
 
         } catch (IOException e) {
             e.printStackTrace();
             showAlert("Error", "Unable to load User Dashboard.");
         }
     }
-    
+
     @FXML
     private void openRegister(ActionEvent event) {
         try {
             // Load the register.fxml file
             FXMLLoader loader = new FXMLLoader(getClass().getResource("register.fxml"));
             Parent root = loader.load();
-            
             // Get the current stage
             Stage stage = (Stage) signUpLink.getScene().getWindow();
-            
-            // Set the new scene
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
+
+            // Force window state refresh
+            stage.setMaximized(false);  // First set to false
+            stage.setScene(new Scene(root));
             stage.setTitle("Register - Citizen Complaint System");
-            stage.show();
-            
+
+            // Use Platform.runLater to ensure proper timing
+            javafx.application.Platform.runLater(() -> {
+                stage.setMaximized(true);  // Then set to true
+            });
+
         } catch (IOException e) {
             e.printStackTrace();
             showAlert("Error", "Could not open registration page. Please make sure register.fxml exists.");
         }
     }
-    
+
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -165,7 +172,7 @@ public class FXMLDocumentController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    
+
     private boolean isValidEmail(String email) {
         // Basic email validation regex
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";

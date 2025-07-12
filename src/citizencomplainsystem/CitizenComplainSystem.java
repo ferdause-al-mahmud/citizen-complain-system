@@ -15,13 +15,19 @@ import javafx.stage.Stage;
  * @author ferda
  */
 public class CitizenComplainSystem extends Application {
-    
+
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
-        
+
         Scene scene = new Scene(root);
-        
+
+        // Maximize the window (keeps title bar visible)
+        stage.setMaximized(true);
+
+        // Optional: Set window title
+        stage.setTitle("Login - Citizen Complaint System");
+
         stage.setScene(scene);
         stage.show();
     }
@@ -32,5 +38,5 @@ public class CitizenComplainSystem extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }
