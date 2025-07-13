@@ -228,21 +228,37 @@ public class UserDashboardController implements Initializable {
         }
     }
 
-    /**
-     * Opens user profile page
-     */
-    @FXML
-    private void openProfile(ActionEvent event) {
-        try {
-            // TODO: Create UserProfile.fxml and controller
-            System.out.println("Opening Profile for user: " + currentUserEmail);
-            showInfoAlert("User Profile", "User Profile management will be implemented soon!");
+   /**
+ * Opens user profile page
+ */
+@FXML
+private void openProfile(ActionEvent event) {
+    try {
+        // Load the User Profile FXML
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("UserProfile.fxml"));
+        Parent root = loader.load();
+        
+        // Get the controller and set the current user
+        UserProfileController profileController = loader.getController();
+        profileController.setCurrentUser(currentUserEmail);
+        
+        // Get the current stage and set the profile scene
+        Stage stage = (Stage) profileButton.getScene().getWindow();
+                        stage.setMaximized(false);  // First set to false
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            showErrorAlert("Error", "Could not open User Profile page.");
-        }
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("User Profile - Citizen Complaint System");
+        javafx.application.Platform.runLater(() -> {
+                    stage.setMaximized(true);  // Then set to true
+                });
+        System.out.println("Opened User Profile for user: " + currentUserEmail);
+        
+    } catch (Exception e) {
+        e.printStackTrace();
+        showErrorAlert("Error", "Could not open User Profile page: " + e.getMessage());
     }
+}
 
     /**
      * Opens help and support page
@@ -275,6 +291,8 @@ public class UserDashboardController implements Initializable {
             showErrorAlert("Error", "Could not open Settings page.");
         }
     }
+    
+    
 
     /**
      * Refreshes dashboard data
@@ -305,4 +323,6 @@ public class UserDashboardController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
+    
+    
 }

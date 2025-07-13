@@ -10,6 +10,8 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 
 /**
@@ -82,6 +84,101 @@ public class MongoDBConnector {
         return user;
     } catch (Exception e) {
         System.out.println("MongoDB authentication failed: " + e.getMessage());
+        return null;
+    }
+}
+    
+    /**
+ * Updates user information in the database
+ */
+public static boolean updateUserInfo(String currentEmail, String newFullName, String newEmail, String newPhone) {
+    try {
+        MongoDatabase db = getDatabase();
+        MongoCollection<Document> users = db.getCollection("users");
+        
+        Document query = new Document("email", currentEmail);
+        Document update = new Document("$set", new Document()
+            .append("fullName", newFullName)
+            .append("email", newEmail)
+            .append("phone", newPhone));
+        
+        UpdateResult result = users.updateOne(query, update);
+        return result.getModifiedCount() > 0;
+        
+    } catch (Exception e) {
+        System.out.println("MongoDB update user info failed: " + e.getMessage());
+        return false;
+    }
+}
+
+/**
+ * Updates user password in the database
+ */
+public static boolean updateUserPassword(String email, String newPassword) {
+    try {
+        MongoDatabase db = getDatabase();
+        MongoCollection<Document> users = db.getCollection("users");
+        
+        Document query = new Document("email", email);
+        Document update = new Document("$set", new Document("password", newPassword));
+        
+        UpdateResult result = users.updateOne(query, update);
+        return result.getModifiedCount() > 0;
+        
+    } catch (Exception e) {
+        System.out.println("MongoDB update password failed: " + e.getMessage());
+        return false;
+    }
+}
+
+/**
+ * Deletes a user from the database
+ */
+public static boolean deleteUser(String email) {
+    try {
+        MongoDatabase db = getDatabase();
+        MongoCollection<Document> users = db.getCollection("users");
+        
+        Document query = new Document("email", email);
+        DeleteResult result = users.deleteOne(query);
+        return result.getDeletedCount() > 0;
+        
+    } catch (Exception e) {
+        System.out.println("MongoDB delete user failed: " + e.getMessage());
+        return false;
+    }
+}
+
+/**
+ * Checks if an email already exists in the database
+ */
+public static boolean emailExists(String email) {
+    try {
+        MongoDatabase db = getDatabase();
+        MongoCollection<Document> users = db.getCollection("users");
+        
+        Document query = new Document("email", email);
+        return users.find(query).first() != null;
+        
+    } catch (Exception e) {
+        System.out.println("MongoDB email check failed: " + e.getMessage());
+        return false;
+    }
+}
+
+/**
+ * Gets user data by email
+ */
+public static Document getUserByEmail(String email) {
+    try {
+        MongoDatabase db = getDatabase();
+        MongoCollection<Document> users = db.getCollection("users");
+        
+        Document query = new Document("email", email);
+        return users.find(query).first();
+        
+    } catch (Exception e) {
+        System.out.println("MongoDB get user failed: " + e.getMessage());
         return null;
     }
 }
