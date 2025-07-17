@@ -167,35 +167,41 @@ public class UserDashboardController implements Initializable {
         }
     }
 
-    /**
-     * Opens new complaint form
-     */
-    @FXML
-    private void openNewComplaint(ActionEvent event) {
-        try {
-            // TODO: Create NewComplaint.fxml and controller
-            System.out.println("Opening New Complaint form for user: " + currentUserEmail);
-            showInfoAlert("New Complaint", "New Complaint form will be implemented soon!");
-
-            // Placeholder for actual implementation:
-            /*
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("NewComplaint.fxml"));
-            Parent root = loader.load();
-            
-            NewComplaintController controller = loader.getController();
-            controller.setCurrentUser(currentUserEmail);
-            
-            Stage stage = new Stage();
-            stage.setTitle("New Complaint - Citizen Complaint System");
-            stage.setScene(new Scene(root));
-            stage.show();
-             */
-        } catch (Exception e) {
-            e.printStackTrace();
-            showErrorAlert("Error", "Could not open New Complaint form.");
-        }
+  /**
+ * Opens new complaint form
+ */
+@FXML
+private void openNewComplaint(ActionEvent event) {
+    try {
+        // Load the new complaint form
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("NewComplaint.fxml"));
+        Parent root = loader.load();
+        
+        // Set the current user in the new complaint controller
+        NewComplaintController newComplaintController = loader.getController();
+        newComplaintController.setCurrentUser(currentUserEmail);
+        
+        // Get the current stage and set the new complaint scene
+        Stage stage = (Stage) newComplaintButton.getScene().getWindow();
+        stage.setMaximized(false);  // First set to false
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("New Complaint - Citizen Complaint System");
+        
+        javafx.application.Platform.runLater(() -> {
+            stage.setMaximized(true);  // Then set to true
+        });
+        
+        System.out.println("Opened new complaint form for user: " + currentUserEmail);
+        
+    } catch (IOException e) {
+        e.printStackTrace();
+        showErrorAlert("Navigation Error", "Could not open new complaint form: " + e.getMessage());
+    } catch (Exception e) {
+        e.printStackTrace();
+        showErrorAlert("Error", "An unexpected error occurred: " + e.getMessage());
     }
-
+}
     /**
      * Opens view all complaints page
      */

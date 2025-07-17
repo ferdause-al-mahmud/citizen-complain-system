@@ -452,6 +452,8 @@ public class UserProfileController implements Initializable {
         }
     }
     
+    
+    
     /**
      * Performs the actual account deletion
      */

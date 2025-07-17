@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="citizencomplainsystem.NewComplaintController">
+   <!-- Top Navigation Bar -->
+   <top>
+      <HBox alignment="CENTER_LEFT" spacing="20.0" style="-fx-background-color: #8B5CF6; -fx-padding: 15;">
+         <children>
+            <Button fx:id="backButton" mnemonicParsing="false" onAction="#handleBack" style="-fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: white; -fx-background-radius: 5;" text="← Back">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Button>
+            <Label text="New Complaint" textFill="white">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="userEmailLabel" text="user@example.com" textFill="white">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+   </top>
+   
+   <!-- Main Content Area -->
+   <center>
+      <ScrollPane fitToWidth="true" style="-fx-background-color: #f5f5f5;">
+         <content>
+            <VBox spacing="25.0" style="-fx-background-color: #f5f5f5;">
+               <padding>
+                  <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+               </padding>
+               <children>
+                  
+                  <!-- Form Title -->
+                  <VBox spacing="10.0">
+                     <children>
+                        <Label text="Submit New Complaint" textFill="#333333">
+                           <font>
+                              <Font name="System Bold" size="28.0" />
+                           </font>
+                        </Label>
+                        <Label text="Please fill out all required fields to submit your complaint" textFill="#666666">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Separator />
+                     </children>
+                  </VBox>
+                  
+                  <!-- Complaint Form -->
+                  <VBox spacing="20.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);">
+                     <padding>
+                        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                     </padding>
+                     <children>
+                        
+                        <!-- Complaint Title -->
+                        <VBox spacing="8.0">
+                           <children>
+                              <Label text="Complaint Title *" textFill="#333333">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="titleField" promptText="Enter a brief title for your complaint" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #ddd; -fx-padding: 10;">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </VBox>
+                        
+                        <!-- Category and Priority Row -->
+                        <HBox spacing="20.0">
+                           <children>
+                              <!-- Category -->
+                              <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label text="Category *" textFill="#333333">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <ComboBox fx:id="categoryComboBox" prefWidth="200.0" promptText="Select category" style="-fx-background-radius: 5;">
+                                       <HBox.hgrow>ALWAYS</HBox.hgrow>
+                                    </ComboBox>
+                                 </children>
+                              </VBox>
+                              
+                              <!-- Priority -->
+                              <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label text="Priority *" textFill="#333333">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <ComboBox fx:id="priorityComboBox" prefWidth="200.0" promptText="Select priority" style="-fx-background-radius: 5;">
+                                       <HBox.hgrow>ALWAYS</HBox.hgrow>
+                                    </ComboBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        
+                        <!-- Location -->
+                        <VBox spacing="8.0">
+                           <children>
+                              <Label text="Location *" textFill="#333333">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="locationField" promptText="Enter the location where the issue occurred" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #ddd; -fx-padding: 10;">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </VBox>
+                        
+                        <!-- Description -->
+                        <VBox spacing="8.0">
+                           <children>
+                              <Label text="Detailed Description *" textFill="#333333">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextArea fx:id="descriptionArea" prefRowCount="6" promptText="Please provide a detailed description of your complaint..." style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #ddd;">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </TextArea>
+                           </children>
+                        </VBox>
+                        
+                        <!-- Contact Information -->
+                        <VBox spacing="8.0">
+                           <children>
+                              <Label text="Contact Phone (Optional)" textFill="#333333">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="contactPhoneField" promptText="Enter phone number for follow-up" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #ddd; -fx-padding: 10;">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </VBox>
+                        
+                     </children>
+                  </VBox>
+                  
+                  <!-- Action Buttons -->
+                  <HBox spacing="15.0" alignment="CENTER_RIGHT">
+                     <children>
+                        <Button fx:id="clearButton" mnemonicParsing="false" onAction="#clearForm" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: white; -fx-text-fill: #666; -fx-border-color: #ddd; -fx-border-radius: 8; -fx-background-radius: 8; -fx-font-size: 14px;" text="Clear Form">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="submitButton" mnemonicParsing="false" onAction="#submitComplaint" prefHeight="45.0" prefWidth="150.0" style="-fx-background-color: #8B5CF6; -fx-text-fill: white; -fx-background-radius: 8; -fx-font-size: 14px;" text="Submit Complaint">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+                  
+                  <!-- Status Message -->
+                  <VBox fx:id="statusContainer" spacing="10.0" style="-fx-background-color: #f0f9ff; -fx-background-radius: 8; -fx-padding: 15;" visible="false">
+                     <children>
+                        <Label fx:id="statusLabel" text="Status message will appear here" textFill="#0ea5e9">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>
