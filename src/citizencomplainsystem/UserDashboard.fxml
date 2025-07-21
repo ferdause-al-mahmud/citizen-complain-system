@@ -170,45 +170,20 @@
                            </children>
                         </HBox>
                         
-                        <!-- Recent Complaints List -->
+                        <!-- Recent Complaints List Container -->
                         <VBox fx:id="recentComplaintsContainer" spacing="10.0">
                            <children>
-                              <!-- Sample Recent Complaint Item -->
-                              <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 8; -fx-padding: 15;">
-                                 <children>
-                                    <VBox spacing="5.0" HBox.hgrow="ALWAYS">
-                                       <children>
-                                          <Label text="Road Maintenance Issue" textFill="#333333">
-                                             <font>
-                                                <Font name="System Bold" size="14.0" />
-                                             </font>
-                                          </Label>
-                                          <Label text="Submitted on: 2025-06-28 | Status: Pending" textFill="#666666">
-                                             <font>
-                                                <Font size="12.0" />
-                                             </font>
-                                          </Label>
-                                          <Label text="Complaint ID: CMP001" textFill="#888888">
-                                             <font>
-                                                <Font size="11.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </VBox>
-                                    <Label style="-fx-background-color: #fef3c7; -fx-text-fill: #f59e0b; -fx-background-radius: 15; -fx-padding: 5 10;" text="Pending">
-                                       <font>
-                                          <Font size="11.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              
                               <!-- No Complaints Message (initially hidden) -->
                               <VBox fx:id="noComplaintsContainer" alignment="CENTER" spacing="10.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 8; -fx-padding: 40;" visible="false">
                                  <children>
+                                    <Label text="📋" textFill="#666666">
+                                       <font>
+                                          <Font size="32.0" />
+                                       </font>
+                                    </Label>
                                     <Label text="No complaints found" textFill="#666666">
                                        <font>
-                                          <Font size="16.0" />
+                                          <Font name="System Bold" size="16.0" />
                                        </font>
                                     </Label>
                                     <Label text="Click 'New Complaint' to submit your first complaint" textFill="#888888">
@@ -216,8 +191,15 @@
                                           <Font size="12.0" />
                                        </font>
                                     </Label>
+                                    <Button mnemonicParsing="false" onAction="#openNewComplaint" style="-fx-background-color: #8B5CF6; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 8 16;" text="Create New Complaint">
+                                       <font>
+                                          <Font size="12.0" />
+                                       </font>
+                                    </Button>
                                  </children>
                               </VBox>
+                              
+                              <!-- Real complaint items will be added here dynamically -->
                            </children>
                         </VBox>
                      </children>
@@ -309,5 +291,4 @@
          </content>
       </ScrollPane>
    </center>
-   
 </BorderPane>

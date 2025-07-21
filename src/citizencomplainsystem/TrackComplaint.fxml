@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="citizencomplainsystem.TrackComplaintController">
+   <children>
+      <VBox layoutX="0.0" layoutY="0.0" prefHeight="800.0" prefWidth="1200.0" spacing="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <!-- Header Section -->
+            <HBox alignment="CENTER_LEFT" prefHeight="60.0" style="-fx-background-color: #8B5CF6; -fx-padding: 15;" spacing="20.0">
+               <children>
+                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBackToDashboard" style="-fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: white; -fx-background-radius: 5;" text="← Back to Dashboard">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Label text="Track Complaint" textFill="white">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            
+            <!-- Search Section -->
+            <VBox spacing="20.0" style="-fx-background-color: white; -fx-border-color: #8B5CF6; -fx-border-radius: 10; -fx-background-radius: 10; -fx-border-width: 2;" VBox.vgrow="NEVER">
+               <children>
+                  <Label text="Enter Complaint ID to Track" textFill="#333333">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER_LEFT" spacing="15.0">
+                     <children>
+                        <TextField fx:id="complaintIdTextField" prefWidth="400.0" promptText="Enter Complaint ID (e.g., CMP-2024-001)" style="-fx-font-size: 14px; -fx-padding: 10;">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <Button fx:id="trackButton" mnemonicParsing="false" onAction="#trackComplaint" style="-fx-background-color: #8B5CF6; -fx-text-fill: white; -fx-background-radius: 8; -fx-font-size: 14px; -fx-padding: 10 20;" text="Track Complaint">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="clearButton" mnemonicParsing="false" onAction="#clearSearch" style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 10 15;" text="Clear">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="25.0" left="30.0" right="30.0" top="25.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets bottom="0.0" left="30.0" right="30.0" top="10.0" />
+               </VBox.margin>
+            </VBox>
+            
+            <!-- Complaint Details Section -->
+            <ScrollPane fitToWidth="true" style="-fx-background-color: #f5f5f5;" VBox.vgrow="ALWAYS">
+               <content>
+                  <VBox fx:id="complaintDetailsContainer" spacing="15.0" style="-fx-background-color: #f5f5f5;">
+                     <padding>
+                        <Insets bottom="30.0" left="30.0" right="30.0" top="10.0" />
+                     </padding>
+                     
+                     <!-- Initial Message -->
+                     <VBox fx:id="initialMessageContainer" alignment="CENTER" spacing="20.0" style="-fx-background-color: white; -fx-border-color: #8B5CF6; -fx-border-radius: 10; -fx-background-radius: 10; -fx-border-width: 2;">
+                        <children>
+                           <Label text="🔍" textFill="#8B5CF6">
+                              <font>
+                                 <Font size="48.0" />
+                              </font>
+                           </Label>
+                           <Label text="Enter a Complaint ID to Track" textFill="#333333">
+                              <font>
+                                 <Font name="System Bold" size="20.0" />
+                              </font>
+                           </Label>
+                           <Label text="You can find your complaint ID in your email confirmation or in the 'View All Complaints' section" textAlignment="CENTER" textFill="#666666" wrapText="true">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Label>
+                        </children>
+                        <padding>
+                           <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                        </padding>
+                     </VBox>
+                     
+                     <!-- Complaint Not Found Message -->
+                     <VBox fx:id="notFoundContainer" alignment="CENTER" spacing="20.0" style="-fx-background-color: white; -fx-border-color: #ef4444; -fx-border-radius: 10; -fx-background-radius: 10; -fx-border-width: 2;" visible="false">
+                        <children>
+                           <Label text="❌" textFill="#ef4444">
+                              <font>
+                                 <Font size="48.0" />
+                              </font>
+                           </Label>
+                           <Label text="Complaint Not Found" textFill="#ef4444">
+                              <font>
+                                 <Font name="System Bold" size="20.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="notFoundMessageLabel" text="The complaint ID you entered was not found or doesn't belong to your account." textAlignment="CENTER" textFill="#666666" wrapText="true">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Label>
+                           <Button mnemonicParsing="false" onAction="#viewAllComplaints" style="-fx-background-color: #8B5CF6; -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 10 20;" text="View All My Complaints">
+                              <font>
+                                 <Font size="14.0" />
+                              </font>
+                           </Button>
+                        </children>
+                        <padding>
+                           <Insets bottom="40.0" left="30.0" right="30.0" top="40.0" />
+                        </padding>
+                     </VBox>
+                     
+                     <!-- Complaint Details Card -->
+                     <VBox fx:id="complaintCard" spacing="25.0" style="-fx-background-color: white; -fx-border-color: #8B5CF6; -fx-border-radius: 10; -fx-background-radius: 10; -fx-border-width: 2; -fx-effect: dropshadow(gaussian, rgba(139,92,246,0.3), 10, 0, 0, 5);" visible="false">
+                        <children>
+                           <!-- Complaint Header -->
+                           <VBox spacing="15.0">
+                              <children>
+                                 <HBox alignment="CENTER_LEFT" spacing="20.0">
+                                    <children>
+                                       <Label fx:id="complaintTitleLabel" text="Complaint Title" textFill="#333333">
+                                          <font>
+                                             <Font name="System Bold" size="22.0" />
+                                          </font>
+                                       </Label>
+                                       <Region HBox.hgrow="ALWAYS" />
+                                       <Label fx:id="complaintStatusLabel" text="Status" style="-fx-background-color: #f3f4f6; -fx-text-fill: #6b7280; -fx-padding: 10 20 10 20; -fx-background-radius: 25; -fx-font-weight: bold;">
+                                          <font>
+                                             <Font size="14.0" />
+                                          </font>
+                                       </Label>
+                                    </children>
+                                 </HBox>
+                                 <Label fx:id="complaintIdLabel" text="Complaint ID: " textFill="#8B5CF6">
+                                    <font>
+                                       <Font name="System Bold" size="16.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </VBox>
+                           
+                           <!-- Progress Timeline -->
+                           <VBox fx:id="timelineContainer" spacing="20.0">
+                              <children>
+                                 <Label text="Progress Timeline" textFill="#333333">
+                                    <font>
+                                       <Font name="System Bold" size="18.0" />
+                                    </font>
+                                 </Label>
+                                 <!-- Timeline items will be added dynamically -->
+                              </children>
+                           </VBox>
+                           
+                           <!-- Complaint Information -->
+                           <VBox spacing="20.0">
+                              <children>
+                                 <Label text="Complaint Information" textFill="#333333">
+                                    <font>
+                                       <Font name="System Bold" size="18.0" />
+                                    </font>
+                                 </Label>
+                                 
+                                 <GridPane hgap="25.0" vgap="15.0">
+                                    <columnConstraints>
+                                       <ColumnConstraints hgrow="NEVER" minWidth="140.0" />
+                                       <ColumnConstraints hgrow="ALWAYS" />
+                                    </columnConstraints>
+                                    <children>
+                                       <Label text="Category:" textFill="#666666" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                          <font>
+                                             <Font name="System Bold" size="14.0" />
+                                          </font>
+                                       </Label>
+                                       <Label fx:id="categoryLabel" text="-" textFill="#333333" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                          <font>
+                                             <Font size="14.0" />
+                                          </font>
+                                       </Label>
+                                       
+                                       <Label text="Priority:" textFill="#666666" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                          <font>
+                                             <Font name="System Bold" size="14.0" />
+                                          </font>
+                                       </Label>
+                                       <Label fx:id="priorityLabel" text="-" textFill="#333333" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                          <font>
+                                             <Font size="14.0" />
+                                          </font>
+                                       </Label>
+                                       
+                                       <Label text="Location:" textFill="#666666" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                                          <font>
+                                             <Font name="System Bold" size="14.0" />
+                                          </font>
+                                       </Label>
+                                       <Label fx:id="locationLabel" text="-" textFill="#333333" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                          <font>
+                                             <Font size="14.0" />
+                                          </font>
+                                       </Label>
+                                       
+                                       <Label text="Contact Phone:" textFill="#666666" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                                          <font>
+                                             <Font name="System Bold" size="14.0" />
+                                          </font>
+                                       </Label>
+                                       <Label fx:id="contactPhoneLabel" text="-" textFill="#333333" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                          <font>
+                                             <Font size="14.0" />
+                                          </font>
+                                       </Label>
+                                    </children>
+                                 </GridPane>
+                                 
+                                 <VBox spacing="8.0">
+                                    <children>
+                                       <Label text="Description:" textFill="#666666">
+                                          <font>
+                                             <Font name="System Bold" size="14.0" />
+                                          </font>
+                                       </Label>
+                                       <Label fx:id="descriptionLabel" text="-" textFill="#333333" wrapText="true">
+                                          <font>
+                                             <Font size="14.0" />
+                                          </font>
+                                       </Label>
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                           
+                           <!-- Admin Response Section -->
+                           <VBox fx:id="adminResponseContainer" spacing="15.0" visible="false">
+                              <children>
+                                 <Label text="Admin Response" textFill="#8B5CF6">
+                                    <font>
+                                       <Font name="System Bold" size="18.0" />
+                                    </font>
+                                 </Label>
+                                 <Label fx:id="adminResponseLabel" text="-" textFill="#333333" wrapText="true" style="-fx-background-color: #f8f9fa; -fx-padding: 20; -fx-background-radius: 8; -fx-border-color: #8B5CF6; -fx-border-radius: 8;">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </VBox>
+                           
+                           <!-- Action Buttons -->
+                           <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                              <children>
+                                 <Button fx:id="refreshTrackingButton" mnemonicParsing="false" onAction="#refreshTracking" style="-fx-background-color: #10b981; -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 10 20;" text="Refresh Status">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Button>
+                                 <Button mnemonicParsing="false" onAction="#viewAllComplaints" style="-fx-background-color: #8B5CF6; -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 10 20;" text="View All Complaints">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Button>
+                              </children>
+                           </HBox>
+                        </children>
+                        <padding>
+                           <Insets bottom="25.0" left="30.0" right="30.0" top="25.0" />
+                        </padding>
+                     </VBox>
+                  </VBox>
+               </content>
+            </ScrollPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
