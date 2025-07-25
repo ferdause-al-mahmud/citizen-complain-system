@@ -2,17 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/ferda/OneDrive/Documents/NetBeansProjects/CitizenComplainSystem/src/citizencomplainsystem/UserDashboardController.java</file>
-            <file>file:/C:/Users/ferda/OneDrive/Documents/NetBeansProjects/CitizenComplainSystem/src/citizencomplainsystem/MongoDBConnector.java</file>
-            <file>file:/C:/Users/ferda/OneDrive/Documents/NetBeansProjects/CitizenComplainSystem/src/citizencomplainsystem/NewComplaintController.java</file>
-            <file>file:/C:/Users/ferda/OneDrive/Documents/NetBeansProjects/CitizenComplainSystem/src/citizencomplainsystem/NewComplaint.fxml</file>
-            <file>file:/C:/Users/ferda/OneDrive/Documents/NetBeansProjects/CitizenComplainSystem/src/citizencomplainsystem/ViewAllComplaintsController.java</file>
-            <file>file:/C:/Users/ferda/OneDrive/Documents/NetBeansProjects/CitizenComplainSystem/src/citizencomplainsystem/TrackComplaintController.java</file>
-            <file>file:/C:/Users/ferda/OneDrive/Documents/NetBeansProjects/CitizenComplainSystem/src/citizencomplainsystem/TrackComplaint.fxml</file>
-            <file>file:/C:/Users/ferda/OneDrive/Documents/NetBeansProjects/CitizenComplainSystem/src/citizencomplainsystem/ViewAllComplaints.fxml</file>
-            <file>file:/C:/Users/ferda/OneDrive/Documents/NetBeansProjects/CitizenComplainSystem/src/citizencomplainsystem/UserProfileController.java</file>
-            <file>file:/C:/Users/ferda/OneDrive/Documents/NetBeansProjects/CitizenComplainSystem/src/citizencomplainsystem/UserDashboard.fxml</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

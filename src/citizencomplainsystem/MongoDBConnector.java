@@ -10,6 +10,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.mongodb.client.FindIterable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.bson.Document;
@@ -468,4 +469,214 @@ public class MongoDBConnector {
             return false;
         }
     }
+    
+    
+     // ==================== ADMIN MANAGEMENT METHODS ====================
+
+    /**
+     * Gets all users (for admin use)
+     */
+  public static List<Document> getAllUsers() {
+        List<Document> allUsers = new ArrayList<>();
+        try {
+            MongoDatabase db = getDatabase();
+            MongoCollection<Document> users = db.getCollection("users");
+
+            FindIterable<Document> results = users.find()
+                    .sort(new Document("fullName", 1)); // Sort by name
+
+            for (Document user : results) {
+                allUsers.add(user);
+            }
+
+            System.out.println("Retrieved " + allUsers.size() + " total users");
+
+        } catch (Exception e) {
+            System.out.println("MongoDB get all users failed: " + e.getMessage());
+        }
+        return allUsers;
+    }
+    /**
+     * Gets overall system statistics
+     */
+   public static Document getSystemStats() {
+        try {
+            MongoDatabase db = getDatabase();
+            MongoCollection<Document> complaints = db.getCollection("complaints");
+            MongoCollection<Document> users = db.getCollection("users");
+
+            // Count total complaints
+            long totalComplaints = complaints.countDocuments();
+
+            // Count pending complaints
+            long pendingComplaints = complaints.countDocuments(new Document("status", "Pending"));
+
+            // Count in-progress complaints
+            long inProgressComplaints = complaints.countDocuments(new Document("status", "In Progress"));
+
+            // Count resolved complaints
+            long resolvedComplaints = complaints.countDocuments(new Document("status", "Resolved"));
+
+            // Count rejected complaints
+            long rejectedComplaints = complaints.countDocuments(new Document("status", "Rejected"));
+
+            // Count total users
+            long totalUsers = users.countDocuments();
+
+            return new Document("totalComplaints", totalComplaints)
+                    .append("pendingComplaints", pendingComplaints)
+                    .append("inProgressComplaints", inProgressComplaints)
+                    .append("resolvedComplaints", resolvedComplaints)
+                    .append("rejectedComplaints", rejectedComplaints)
+                    .append("totalUsers", totalUsers);
+
+        } catch (Exception e) {
+            System.out.println("MongoDB get system stats failed: " + e.getMessage());
+            return new Document("totalComplaints", 0)
+                    .append("pendingComplaints", 0)
+                    .append("inProgressComplaints", 0)
+                    .append("resolvedComplaints", 0)
+                    .append("rejectedComplaints", 0)
+                    .append("totalUsers", 0);
+        }
+    }
+    /**
+     * Gets complaints by category for reports
+     */
+  public static List<Document> getComplaintsByCategory() {
+        List<Document> categoryStats = new ArrayList<>();
+        try {
+            MongoDatabase db = getDatabase();
+            MongoCollection<Document> complaints = db.getCollection("complaints");
+
+            String[] categories = {
+                    "Road & Transportation", "Water Supply", "Electricity", "Garbage Collection",
+                    "Street Lighting", "Public Safety", "Noise Pollution", "Building & Construction",
+                    "Parks & Recreation", "Healthcare", "Education", "Other"
+            };
+
+            for (String category : categories) {
+                long count = complaints.countDocuments(new Document("category", category));
+                if (count > 0) {
+                    categoryStats.add(new Document("category", category).append("count", count));
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("MongoDB get complaints by category failed: " + e.getMessage());
+        }
+        return categoryStats;
+    }
+
+    /**
+     * Gets complaints by status for reports
+     */
+   public static List<Document> getComplaintsByStatusReport() {
+        List<Document> statusStats = new ArrayList<>();
+        try {
+            MongoDatabase db = getDatabase();
+            MongoCollection<Document> complaints = db.getCollection("complaints");
+
+            String[] statuses = {"Pending", "In Progress", "Resolved", "Rejected"};
+
+            for (String status : statuses) {
+                long count = complaints.countDocuments(new Document("status", status));
+                statusStats.add(new Document("status", status).append("count", count));
+            }
+
+        } catch (Exception e) {
+            System.out.println("MongoDB get complaints by status report failed: " + e.getMessage());
+        }
+        return statusStats;
+    }
+    /**
+     * Gets recent complaints for admin dashboard
+     */
+     public static List<Document> getRecentComplaints(int limit) {
+        List<Document> recentComplaints = new ArrayList<>();
+        try {
+            MongoDatabase db = getDatabase();
+            MongoCollection<Document> complaints = db.getCollection("complaints");
+
+            FindIterable<Document> results = complaints.find()
+                    .sort(new Document("submittedDate", -1))
+                    .limit(limit);
+
+            for (Document complaint : results) {
+                recentComplaints.add(complaint);
+            }
+
+        } catch (Exception e) {
+            System.out.println("MongoDB get recent complaints failed: " + e.getMessage());
+        }
+        return recentComplaints;
+    }
+    /**
+     * Gets pending complaints for admin review
+     */
+public static List<Document> getPendingComplaints() {
+        List<Document> pendingComplaints = new ArrayList<>();
+        try {
+            MongoDatabase db = getDatabase();
+            MongoCollection<Document> complaints = db.getCollection("complaints");
+
+            Document query = new Document("status", "Pending");
+            FindIterable<Document> results = complaints.find(query)
+                    .sort(new Document("submittedDate", -1));
+
+            for (Document complaint : results) {
+                pendingComplaints.add(complaint);
+            }
+
+        } catch (Exception e) {
+            System.out.println("MongoDB get pending complaints failed: " + e.getMessage());
+        }
+        return pendingComplaints;
+    }
+
+ /**
+     * Updates user information including role
+     */
+    public static boolean updateUser(String email, String fullName, String phone, String role, boolean resetPassword) {
+        try {
+            MongoDatabase db = getDatabase();
+            MongoCollection<Document> users = db.getCollection("users");
+
+            Document filter = new Document("email", email);
+            Document update = new Document("$set", new Document()
+                    .append("fullName", fullName)
+                    .append("phone", phone)
+                    .append("role", role)
+                    .append("lastUpdated", LocalDateTime.now().toString()));
+
+            // If password reset is requested, set default password
+            if (resetPassword) {
+                // In a real application, you should hash the password
+                update.get("$set", Document.class).append("password", "password123");
+                update.get("$set", Document.class).append("passwordResetRequired", true);
+            }
+
+            long modifiedCount = users.updateOne(filter, update).getModifiedCount();
+
+            if (modifiedCount > 0) {
+                System.out.println("User updated successfully: " + email);
+                System.out.println("New role: " + role);
+                if (resetPassword) {
+                    System.out.println("Password reset to default");
+                }
+                return true;
+            } else {
+                System.out.println("No user found with email: " + email);
+                return false;
+            }
+
+        } catch (Exception e) {
+            System.out.println("MongoDB update user failed: " + e.getMessage());
+            return false;
+        }
+    }
+
+
 }
+
+
