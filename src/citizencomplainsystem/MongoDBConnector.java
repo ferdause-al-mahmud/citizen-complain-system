@@ -21,22 +21,23 @@ import org.bson.Document;
  */
 public class MongoDBConnector {
     
-    private static final String CONNECTION_STRING = 
-        "mongodb+srv://CitizenComplainSystem:iY9KxVXMwVeg2qLl@cluster0.dnxxphb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-    
+//    private static final String CONNECTION_STRING = 
+//        "mongodb+srv://CitizenComplainSystem:iY9KxVXMwVeg2qLl@cluster0.dnxxphb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+//    
     private static MongoClient mongoClient;
     private static MongoDatabase database;
     
-    // Connect to MongoDB
-    public static void connect() {
-        ConnectionString connString = new ConnectionString(CONNECTION_STRING);
-        MongoClientSettings settings = MongoClientSettings.builder()
-                .applyConnectionString(connString)
-                .build();
-        mongoClient = MongoClients.create(settings);
-        database = mongoClient.getDatabase("CitizenComplainSystem");
-        System.out.println("Connected to MongoDB.");
-    }
+   private static final String CONNECTION_STRING = "mongodb://localhost:27017";
+
+public static void connect() {
+    ConnectionString connString = new ConnectionString(CONNECTION_STRING);
+    MongoClientSettings settings = MongoClientSettings.builder()
+            .applyConnectionString(connString)
+            .build();
+    mongoClient = MongoClients.create(settings);
+    database = mongoClient.getDatabase("CitizenComplainSystem");
+    System.out.println("Connected to local MongoDB.");
+}
     
     // Get the database object
     public static MongoDatabase getDatabase() {
